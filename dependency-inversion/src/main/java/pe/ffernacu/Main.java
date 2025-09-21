@@ -11,6 +11,10 @@ import org.springframework.boot.CommandLineRunner;
 import pe.ffernacu.service.Impl.CashPaymentImpl;
 import pe.ffernacu.service.Impl.CreditCardPaymentImpl;
 
+/**
+ * El principio de inversion de dependencias define que las clases de alto nivel no deben depender de las clases de bajo nivel sino de sus abstracciones
+ * Abstracciones: define un que se va a realizar mediante metodos y no como lo hace implementacion
+ */
 @SpringBootApplication
 public class Main implements CommandLineRunner{
 
@@ -21,35 +25,35 @@ public class Main implements CommandLineRunner{
         SpringApplication.run(Main.class, args);
     }
 
-    @Override
-    public void run(String... args){
-        log.info("Start!");
-        useCase2();
-        log.info("End");
-    }
-
-    private static void useCase2() {
-
-        Payment newPayment = new Payment(10.0, PaymentType.CREDIT);
-        var payment = switch (newPayment.paymentType()){
-            case CASH -> new CashPaymentImpl();
-            case CREDIT-> new CreditCardPaymentImpl();
-        };
-        var result = payment.registerPayment();
-        log.info(result);
-    }
-
-    private static void useCase() {
+    private void useCase() {
         String flag = "C";
 
-        var payment = switch (flag){
+        generatePayment = switch (flag){
           case "A" -> new CashPaymentImpl();
           case "B" -> new CreditCardPaymentImpl();
           default -> throw new RuntimeException();
 
         };
-        var result = payment.registerPayment();
+        var result = generatePayment.registerPayment();
         log.info(result);
+    }
+
+    private void useCase2() {
+
+        Payment newPayment = new Payment(10.0, PaymentType.CASH);
+        generatePayment = switch (newPayment.paymentType()){
+            case CASH -> new CashPaymentImpl();
+            case CREDIT-> new CreditCardPaymentImpl();
+        };
+        var result = generatePayment.registerPayment();
+        log.info(result);
+    }
+
+    @Override
+    public void run(String... args){
+        log.info("Start!");
+        useCase2();
+        log.info("End");
     }
 
 }
