@@ -10,7 +10,9 @@ import pe.ffernacu.service.Taller;
 import pe.ffernacu.service.Tienda;
 
 /**
- * La sustitucion de liskov define que las clases subtipo puedes ser reemplazadas por sus clases base sin alterar su funcionamiento
+ * La sustitucion de liskov define mediante la herencia que las clases subtipo puedes ser reemplazadas por sus clases base sin alterar su funcionamiento
+ * Herencia: extender el comportamiento de la clase Padre hacia las clases hijas
+ * Comportamiento: metodos y propiedades
  */
 @SpringBootApplication
 public class Main implements CommandLineRunner {
